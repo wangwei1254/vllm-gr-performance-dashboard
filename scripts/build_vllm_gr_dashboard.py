@@ -365,7 +365,7 @@ def build_payload(runs: list[dict[str, Any]]) -> dict[str, Any]:
         "schema_version": "vllm-gr.dashboard.v1",
         "generated_from": SUMMARY_NAME,
         "runs": summaries,
-        "gpu": "L20",
+        "gpu": "unrecorded",
         "phase_version": active_version,
         "scenarios": sorted(scenarios.values(), key=lambda item: (item["beam_width"] or 0, item["input_tokens"] or 0)),
         "core_metrics": core_metrics,
@@ -377,7 +377,7 @@ def build_payload(runs: list[dict[str, Any]]) -> dict[str, Any]:
 
 def dashboard_markdown(has_runs: bool) -> str:
     intro = (
-        "Daily offline single-batch performance on GPU `L20`. The dashboard shows only "
+        "Daily offline single-batch performance. The dashboard shows only "
         "offline results captured on or after 2026-09-01 and preserves established-metric "
         "history across measurement revisions. Dashed trend segments indicate measurement or sampling changes."
     )

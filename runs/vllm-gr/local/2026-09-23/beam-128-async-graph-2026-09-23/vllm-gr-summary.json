@@ -1,0 +1,187 @@
+{
+  "schema_version": "vllm-gr.daily.v1",
+  "run": {
+    "id": "beam-128-async-graph-2026-09-23",
+    "date": "2026-09-23",
+    "started_at": "2026-09-23T19:55:39+08:00",
+    "finished_at": "2026-09-23T19:55:39+08:00",
+    "status": "success",
+    "trend_eligible": false,
+    "baseline_eligible": false,
+    "qualification_reasons": [
+      "raw smoke/profile result: single fixed prompt, no representative dataset sample",
+      "no paired miss/hit cache protocol; e2el_hit mirrors e2el",
+      "small sample: 4 measured rounds after 1 warmup round(s)",
+      "host, GPU, and git revision not recorded in the source file"
+    ],
+    "notes": [
+      "Converted from a raw offline beam-search test result; not produced by the daily benchmark harness.",
+      "Source file carries no timestamp, host, GPU, or git revision; the conversion date is used and hardware/revision are marked unknown.",
+      "Round 0 cold-start latency 512.81 ms is excluded as warmup (graph capture / first call); 4 steady-state rounds are measured.",
+      "The raw run does not implement the paired miss/hit cache protocol; e2el_hit mirrors e2el and must not be read as an independent measurement.",
+      "Absolute host paths (model, prompt, profile_dir) are redacted to basenames before publishing.",
+      "Reported elapsed_seconds (last round) = 66.83 ms.",
+      "Beam search returned 128 sequences for beam_count 128; token_sha256 9bcedf2eee32bb151d962b8a1c50200d7a3d30d05ff4056405b08f6386e7b7e2 (see raw-result.json artifact)."
+    ]
+  },
+  "source": {
+    "repository": "vllm-gr",
+    "git_sha": "unknown"
+  },
+  "environment": {
+    "host": "local",
+    "hardware": "unrecorded"
+  },
+  "model": {
+    "id": "OneRec_Qwen3_1.7B",
+    "revision": null,
+    "generation_config_source": "model",
+    "path": "OneRec_Qwen3_1.7B"
+  },
+  "dataset": {
+    "name": "single_one_rec_prompt.txt",
+    "kind": "synthetic-control",
+    "representative": false,
+    "task": "single-prompt",
+    "path": "single_one_rec_prompt.txt",
+    "revision": null,
+    "sha256": null,
+    "selection": {
+      "strategy": "single-fixed-prompt",
+      "seed": null,
+      "sample_count": 4,
+      "sample_ids_sha256": null,
+      "shuffle": false
+    }
+  },
+  "scenario": {
+    "key": "beam128-async-graph",
+    "name": "OneRec_Qwen3_1.7B · beam-128 · async-graph-xllm · offline-b1",
+    "execution_mode": "offline",
+    "endpoint": "offline beam_search",
+    "beam_api": "beam_search_v1",
+    "beam_execution_mode": "graph",
+    "pipeline_version": "beam-search-async-graph-xllm",
+    "backend": "vllm-gr-offline",
+    "num_prompts": 4,
+    "max_concurrency": 1,
+    "request_rate": "sequential",
+    "beam_search": true,
+    "n": 128,
+    "sweep": {
+      "axis": "beam_width",
+      "beam_width": 128
+    },
+    "warmup_requests": 1,
+    "server_args": {
+      "scheduling": "async",
+      "resident_request": true,
+      "decode_execution": "xllm",
+      "execution_mode": "graph",
+      "active_batch_size": 1,
+      "engine_batch_capacity": 1,
+      "beam_graph_enabled": true,
+      "beam_max_width": 128,
+      "max_num_seqs": 1,
+      "benchmark_vocab_size": null,
+      "profile_dir": "<redacted>"
+    },
+    "benchmark_args": {
+      "max_tokens": 5,
+      "decode_steps": 3,
+      "output_mode": "compact",
+      "runs": 5,
+      "profiled_round": 5,
+      "phase_definition": {
+        "version": "vllm-gr-round-elapsed-v1",
+        "e2e": "wall-clock perf_counter around each full offline beam_search call"
+      },
+      "measurement_mode": "round-elapsed",
+      "instrumentation": {
+        "canonical": "per-round wall clock; no CUDA completion fence recorded in the raw file"
+      },
+      "cache_protocol": "single prompt; round 1 cold, following rounds warm repeats",
+      "metric_percentiles": [
+        50,
+        90,
+        95,
+        99
+      ],
+      "save_detailed": true
+    }
+  },
+  "results": {
+    "requests": {
+      "completed": 4,
+      "failed": 0
+    },
+    "duration_seconds": 0.2618184001185,
+    "tokens": {
+      "input_total": 0,
+      "output_total": 2560,
+      "output_semantics": "beam-aggregate",
+      "note": "input token count not recorded in the raw file"
+    },
+    "throughput": {
+      "requests_per_second": 15.277765039392133,
+      "output_tokens_per_second": 9777.769625210964,
+      "total_tokens_per_second": 9777.769625210964
+    },
+    "latency_ms": {
+      "e2el": {
+        "mean": 65.454600029625,
+        "std": 0.9731868147706852,
+        "p50": 65.15358365140855,
+        "p90": 66.4127188269049,
+        "p95": 66.62350280676037,
+        "p99": 66.79212999064475,
+        "unit": "ms"
+      },
+      "e2el_hit": {
+        "mean": 65.454600029625,
+        "std": 0.9731868147706852,
+        "p50": 65.15358365140855,
+        "p90": 66.4127188269049,
+        "p95": 66.62350280676037,
+        "p99": 66.79212999064475,
+        "unit": "ms"
+      }
+    },
+    "beam_search": {
+      "requests": 4,
+      "beam_count": 128,
+      "tokens_per_beam": 5,
+      "token_sha256": "9bcedf2eee32bb151d962b8a1c50200d7a3d30d05ff4056405b08f6386e7b7e2"
+    },
+    "samples": {
+      "e2el_ms": [
+        65.42906,
+        64.878107,
+        64.676946,
+        66.834287
+      ],
+      "e2el_hit_ms": [
+        65.42906,
+        64.878107,
+        64.676946,
+        66.834287
+      ],
+      "input_tokens": [],
+      "output_tokens": [
+        640,
+        640,
+        640,
+        640
+      ]
+    }
+  },
+  "artifacts": [
+    {
+      "name": "raw result",
+      "path": "raw-result.json",
+      "sha256": "38f3ba89ccc40ea6dfe02da331c4484267e28da744a31b7dccc1f488bfa696e6",
+      "bytes": 43600,
+      "retention": "runner"
+    }
+  ]
+}

@@ -142,7 +142,7 @@
     ].map(([label, value, hint]) => kpi(label, fmt(value?.mean), "ms", value ? `P50 ${fmt(value.p50)} ms · P90 ${fmt(value.p90)} ms · ${hint}` : hint)).join("");
     root.innerHTML = `
       <div class="vgr-hero-copy">
-        <div class="vgr-hero-label"><span>${escapeHtml(run.run.date)} · GPU L20</span></div>
+        <div class="vgr-hero-label"><span>${escapeHtml(run.run.date)} · ${escapeHtml(run.environment?.hardware || "GPU unrecorded")}</span></div>
         <h2>${escapeHtml(run.scenario.name)}</h2>
         <p>${escapeHtml(run.model.id)} · ${escapeHtml(run.dataset.name)}</p>
         <div class="vgr-tags">
@@ -172,13 +172,13 @@
       ["Execution", scenario.execution_mode || "online"],
       ["Beam API", scenario.beam_api || "beam_search"],
       ["Pipeline", scenario.pipeline_version || "legacy-beam-search"],
-      ["GPU", "L20"],
+      ["GPU", run.environment?.hardware || "unrecorded"],
       ["Source change", sourceLabel(run)],
       ["Exact revision", run.source.git_sha],
       ["Model", run.model.id],
       ["Dataset", `${run.dataset.name} / ${run.dataset.task}`],
       ["Beam width", scenario.n],
-      ["Input length", `${scenario.input_tokens_target} tokens`],
+      ["Input length", scenario.input_tokens_target == null ? "not recorded" : `${scenario.input_tokens_target} tokens`],
       ["Output length", benchmark.max_tokens == null ? "model config" : `${benchmark.max_tokens} tokens per returned beam`],
       ["Measured / warmup", `${scenario.num_prompts} / ${scenario.warmup_requests}`],
       ["Concurrency", scenario.max_concurrency],
@@ -191,7 +191,15 @@
       ["Measurement", benchmark.measurement_mode || "legacy"],
       ["Canonical instrumentation", benchmark.instrumentation?.canonical || "legacy measurement"],
       ["Diagnostic requests", benchmark.diagnostic_prompts],
-      ["GPU", `${run.environment.gpu.name} · ${run.environment.gpu.memory_mib} MiB`],
+      ["GPU", run.environment?.gpu ? `${run.environment.gpu.name} · ${run.environment.gpu.memory_mib} MiB` : undefined],
+      ["Scheduling", args.scheduling],
+      ["Decode execution", args.decode_execution],
+      ["Resident request", args.resident_request],
+      ["Engine batch capacity", args.engine_batch_capacity],
+      ["Benchmark vocab size", args.benchmark_vocab_size],
+      ["Decode steps", benchmark.decode_steps],
+      ["Output mode", benchmark.output_mode],
+      ["Profile directory", args.profile_dir],
     ].filter(([, value]) => value !== undefined && value !== null);
     root.innerHTML = `<dl class="vgr-config-grid">${rows.map(([label, value]) => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join("")}</dl>`;
   }
@@ -808,7 +816,7 @@
     }
     root.innerHTML = `<div class="vgr-run-list">${runs.slice().reverse().map((run) => {
       const active = run.run.id === selectedId ? " is-active" : "";
-      return `<button type="button" class="vgr-run-row${active}" data-run-id="${escapeHtml(run.run.id)}"><span class="vgr-run-date">${escapeHtml(run.run.date)}</span><span class="vgr-run-main"><strong>${escapeHtml(run.scenario.name)}</strong><small>${escapeHtml(sourceLabel(run))} · ${escapeHtml(run.dataset.kind)} · GPU L20</small></span><span class="vgr-run-result">${escapeHtml(run.results.requests.completed)}/${escapeHtml(run.scenario.num_prompts)}</span></button>`;
+      return `<button type="button" class="vgr-run-row${active}" data-run-id="${escapeHtml(run.run.id)}"><span class="vgr-run-date">${escapeHtml(run.run.date)}</span><span class="vgr-run-main"><strong>${escapeHtml(run.scenario.name)}</strong><small>${escapeHtml(sourceLabel(run))} · ${escapeHtml(run.dataset.kind)} · ${escapeHtml(run.environment?.hardware || "GPU unrecorded")}</small></span><span class="vgr-run-result">${escapeHtml(run.results.requests.completed)}/${escapeHtml(run.scenario.num_prompts)}</span></button>`;
     }).join("")}</div>`;
     root.querySelectorAll(".vgr-run-row").forEach((button) => {
       button.addEventListener("click", () => onSelect(button.getAttribute("data-run-id")));

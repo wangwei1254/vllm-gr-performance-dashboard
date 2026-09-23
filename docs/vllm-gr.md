@@ -1,6 +1,6 @@
 # vllm-gr Performance
 
-Daily offline single-batch performance on GPU `L20`. The dashboard shows only offline results captured on or after 2026-09-01 and preserves established-metric history across measurement revisions. Dashed trend segments indicate measurement or sampling changes.
+Daily offline single-batch performance. The dashboard shows only offline results captured on or after 2026-09-01 and preserves established-metric history across measurement revisions. Dashed trend segments indicate measurement or sampling changes.
 
 <div class="vgr-dashboard" id="vgr-dashboard">
   <div class="vgr-toolbar">

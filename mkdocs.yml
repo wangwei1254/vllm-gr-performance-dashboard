@@ -1,5 +1,5 @@
-site_name: AgentCache Dashboard
-site_description: Benchmark dashboard generated from compact dashboard-summary.json artifacts.
+site_name: vllm-gr Performance Dashboard
+site_description: Daily vllm-gr beam-search performance and AgentCache benchmark dashboards.
 
 docs_dir: docs
 site_dir: site
@@ -11,6 +11,7 @@ theme:
 nav:
   - AgentCache Dashboard: index.md
   - vllm-gr Performance: vllm-gr.md
+  - vllm-gr Beam Results: vllm-gr-beam-results.md
   - vllm-gr Data Format: vllm-gr-data-format.md
 
 exclude_docs: |
